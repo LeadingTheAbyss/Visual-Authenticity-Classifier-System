@@ -21,59 +21,59 @@ export default function App() {
   const [loading, setLoading] = useState(false);
 
   const handleUploadClick = () => {
-  fileInputRef.current?.click();
-};
+    fileInputRef.current?.click();
+  };
 
-const handleFileChange = (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  setSelectedFile(file);
-  setPreviewUrl(URL.createObjectURL(file));
-  setResult("");
-  setConfidence("");
-};
-
-const handleSubmit = async () => {
-  if (!selectedFile) {
-    alert("Please select an image first");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("file", selectedFile);
-
-  try {
-    setLoading(true);
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
     setResult("");
     setConfidence("");
+  };
 
-    const response = await fetch("http://127.0.0.1:8080/predict", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      alert(data.error || "Prediction failed");
+  const handleSubmit = async () => {
+    if (!selectedFile) {
+      alert("Please select an image first");
       return;
     }
 
-    setResult(data.result);
-    setConfidence(`${data.confidence}%`);
-  } catch (error) {
-    console.error(error);
-    alert("Could not connect to Flask backend");
-  } finally {
-    setLoading(false);
-  }
-};
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      setLoading(true);
+      setResult("");
+      setConfidence("");
+
+      const response = await fetch("http://127.0.0.1:8080/predict", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "Prediction failed");
+        return;
+      }
+
+      setResult(data.result);
+      setConfidence(`${data.confidence}%`);
+    } catch (error) {
+      console.error(error);
+      alert("Could not connect to Flask backend");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleSound = async () => {
     const video = videoRef.current;
     if (!video) return;
-  
+
     if (volume > 0 && !isMuted) {
       lastVolumeRef.current = volume;
       video.volume = 0;
@@ -82,34 +82,33 @@ const handleSubmit = async () => {
       setIsMuted(true);
       return;
     }
-  
-    const restoredVolume = lastVolumeRef.current > 0 ? lastVolumeRef.current : 0.5;
+
+    const restoredVolume =
+      lastVolumeRef.current > 0 ? lastVolumeRef.current : 0.5;
     video.volume = restoredVolume;
     video.muted = false;
     setVolume(restoredVolume);
     setIsMuted(false);
-  
+
     try {
       await video.play();
     } catch {
-      // Ignore blocked play errors.
     }
   };
 
   const onBrightnessChange = async (e) => {
-  const value = Number(e.target.value);
-  setBrightness(value);
+    const value = Number(e.target.value);
+    setBrightness(value);
 
-  const video = videoRef.current;
-  if (!video) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-  if (value > 0) {
-    try {
-      await video.play();
-    } catch {
+    if (value > 0) {
+      try {
+        await video.play();
+      } catch {}
     }
-  }
-};
+  };
 
   const onVolumeChange = async (e) => {
     const value = Number(e.target.value);
@@ -131,7 +130,6 @@ const handleSubmit = async () => {
       try {
         await video.play();
       } catch {
-        // Ignore blocked play errors.
       }
     }
   };
@@ -141,7 +139,7 @@ const handleSubmit = async () => {
     }
     setSoundHover(true);
   };
-  
+
   const closeSoundPanel = () => {
     soundCloseTimeoutRef.current = setTimeout(() => {
       setSoundHover(false);
@@ -157,23 +155,23 @@ const handleSubmit = async () => {
   const splitOpacity = Math.max(0, 1 - revealProgress * 1.45);
 
   return (
-   <main
-  style={{
-    minHeight: "100dvh",
-    width: "100vw",
-    minWidth: "100vw",
-    position: "relative",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "stretch",
-    padding: 0,
-    margin: 0,
-    overflowX: "hidden",
-    overflowY: "auto",
-    background:
-      "radial-gradient(circle at top, #10131b 0%, #07090f 42%, #020308 100%)",
-  }}
->
+    <main
+      style={{
+        minHeight: "100dvh",
+        width: "100vw",
+        minWidth: "100vw",
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
+        padding: 0,
+        margin: 0,
+        overflowX: "hidden",
+        overflowY: "auto",
+        background:
+          "radial-gradient(circle at top, #10131b 0%, #07090f 42%, #020308 100%)",
+      }}
+    >
       <style>{`
         @keyframes uploadGlowShift {
           0% { background-position: 0 0; }
@@ -229,23 +227,23 @@ const handleSubmit = async () => {
         }}
       />
       <h1
-  style={{
-    position: "absolute",
-    top: "28px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    zIndex: 3,
-    margin: 0,
-    width: "calc(100vw - 64px)",
-    textAlign: "center",
-    fontSize: "clamp(1.45rem, 2.7vw, 2.5rem)",
-    fontWeight: 700,
-    letterSpacing: "0.02em",
-    color: "#f8fafc",
-    textShadow: "0 6px 24px rgba(0,0,0,0.45)",
-    lineHeight: 1.15,
-  }}
->
+        style={{
+          position: "absolute",
+          top: "28px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 3,
+          margin: 0,
+          width: "calc(100vw - 64px)",
+          textAlign: "center",
+          fontSize: "clamp(1.45rem, 2.7vw, 2.5rem)",
+          fontWeight: 700,
+          letterSpacing: "0.02em",
+          color: "#f8fafc",
+          textShadow: "0 6px 24px rgba(0,0,0,0.45)",
+          lineHeight: 1.15,
+        }}
+      >
         AI vs Human Generated Face Image Detection
       </h1>
       <div
@@ -317,114 +315,122 @@ const handleSubmit = async () => {
               step="0.01"
               value={brightness}
               onChange={onBrightnessChange}
-              style={{ width: "100%", accentColor: "#ffffff", cursor: "pointer" }}
+              style={{
+                width: "100%",
+                accentColor: "#ffffff",
+                cursor: "pointer",
+              }}
             />
           </div>
         ) : null}
       </div>
       <div
-  style={{
-    position: "absolute",
-    top: "16px",
-    right: "16px",
-    zIndex: 3,
-    width: "48px",
-    height: "48px",
-  }}
-  onMouseEnter={openSoundPanel}
-  onMouseLeave={closeSoundPanel}
->
-  <button
-    type="button"
-    onClick={toggleSound}
-    style={{
-      width: "48px",
-      height: "48px",
-      padding: 0,
-      border: "none",
-      background: "transparent",
-      display: "grid",
-      placeItems: "center",
-      cursor: "pointer",
-      boxShadow: "none",
-    }}
-    aria-label="Toggle sound"
-    title="Sound"
-  >
-    <img
-      src={isMuted ? "/mute.jpeg" : "/sound.jpeg"}
-      alt="Sound"
-      style={{
-        width: "30px",
-        height: "30px",
-        objectFit: "contain",
-        display: "block",
-        filter:
-          "drop-shadow(0 0 2px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.55))",
-      }}
-    />
-  </button>
-  {showSoundPanel ? (
-  <div
-    onMouseEnter={openSoundPanel}
-    onMouseLeave={closeSoundPanel}
-    style={{
-      position: "absolute",
-      top: "100%",
-      marginTop: "2px",
-      right: 0,
-      minWidth: "190px",
-      padding: "10px 12px",
-      borderRadius: "14px",
-      border: "1px solid rgba(255,255,255,0.32)",
-      background:
-        "linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06))",
-      color: "#ffffff",
-      backdropFilter: "blur(8px)",
-      boxShadow:
-        "0 0 20px rgba(255,255,255,0.12), inset 0 0 12px rgba(255,255,255,0.06)",
-    }}
-  >
+        style={{
+          position: "absolute",
+          top: "16px",
+          right: "16px",
+          zIndex: 3,
+          width: "48px",
+          height: "48px",
+        }}
+        onMouseEnter={openSoundPanel}
+        onMouseLeave={closeSoundPanel}
+      >
+        <button
+          type="button"
+          onClick={toggleSound}
+          style={{
+            width: "48px",
+            height: "48px",
+            padding: 0,
+            border: "none",
+            background: "transparent",
+            display: "grid",
+            placeItems: "center",
+            cursor: "pointer",
+            boxShadow: "none",
+          }}
+          aria-label="Toggle sound"
+          title="Sound"
+        >
+          <img
+            src={isMuted ? "/mute.jpeg" : "/sound.jpeg"}
+            alt="Sound"
+            style={{
+              width: "30px",
+              height: "30px",
+              objectFit: "contain",
+              display: "block",
+              filter:
+                "drop-shadow(0 0 2px rgba(255,255,255,0.95)) drop-shadow(0 0 10px rgba(255,255,255,0.55))",
+            }}
+          />
+        </button>
+        {showSoundPanel ? (
+          <div
+            onMouseEnter={openSoundPanel}
+            onMouseLeave={closeSoundPanel}
+            style={{
+              position: "absolute",
+              top: "100%",
+              marginTop: "2px",
+              right: 0,
+              minWidth: "190px",
+              padding: "10px 12px",
+              borderRadius: "14px",
+              border: "1px solid rgba(255,255,255,0.32)",
+              background:
+                "linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.06))",
+              color: "#ffffff",
+              backdropFilter: "blur(8px)",
+              boxShadow:
+                "0 0 20px rgba(255,255,255,0.12), inset 0 0 12px rgba(255,255,255,0.06)",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "0.7rem",
+                letterSpacing: "0.07em",
+                textTransform: "uppercase",
+                opacity: 0.95,
+                marginBottom: "6px",
+              }}
+            >
+              Sound
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={onVolumeChange}
+              style={{
+                width: "100%",
+                accentColor: "#ffffff",
+                cursor: "pointer",
+              }}
+            />
+          </div>
+        ) : null}
+      </div>
       <div
         style={{
-          fontSize: "0.7rem",
-          letterSpacing: "0.07em",
-          textTransform: "uppercase",
-          opacity: 0.95,
-          marginBottom: "6px",
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+          maxWidth: "none",
+          display: "grid",
+          justifyItems: "center",
+          gap: "22px",
+          paddingTop: "110px",
+          paddingBottom: "140px",
+          paddingLeft: "24px",
+          paddingRight: "24px",
+          boxSizing: "border-box",
+          pointerEvents: "none",
         }}
       >
-        Sound
-      </div>
-      <input
-        type="range"
-        min="0"
-        max="1"
-        step="0.01"
-        value={volume}
-        onChange={onVolumeChange}
-        style={{ width: "100%", accentColor: "#ffffff", cursor: "pointer" }}
-      />
-    </div>
-  ) : null}
-</div>
-<div
-  style={{
-    position: "relative",
-    zIndex: 1,
-    width: "100%",
-    maxWidth: "none",
-    display: "grid",
-    justifyItems: "center",
-    gap: "22px",
-    paddingTop: "110px",
-    paddingBottom: "140px",
-    paddingLeft: "24px",
-    paddingRight: "24px",
-    boxSizing: "border-box",
-    pointerEvents: "none",
-  }}
->
         <div
           style={{
             opacity: splitOpacity,
@@ -534,287 +540,290 @@ const handleSubmit = async () => {
                 "typingLoop 11s steps(59, end) infinite, caretBlink 0.85s step-end infinite",
             }}
           >
-            Website to detect whether an image of a Human Face is Real or AI generated
+            Website to detect whether an image of a Human Face is Real or AI
+            generated
           </span>
         </div>
       </div>
-      
-    <div
-  style={{
-    position: "relative",
-    zIndex: 3,
-    width: "min(320px, 82vw)",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "14px",
-    margin: "36px auto 80px auto",
-    alignSelf: "center",
-  }}
->
-  <button
-    type="button"
-    onClick={handleUploadClick}
-    style={{
-      position: "relative",
-      width: "100%",
-      padding: "14px 16px",
-      borderRadius: "10px",
-      border: "1px solid rgba(255,255,255,0.24)",
-      background: "rgba(0,0,0,0.38)",
-      color: "#f8fafc",
-      fontSize: "0.95rem",
-      fontWeight: 600,
-      letterSpacing: "0.02em",
-      cursor: "pointer",
-      overflow: "hidden",
-      transition:
-        "transform 260ms ease-in, box-shadow 260ms ease-in, border-color 260ms ease-in, color 260ms ease-in",
-      boxShadow: "0 8px 28px rgba(0,0,0,0.38)",
-    }}
-    onMouseEnter={(e) => {
-      const glow = e.currentTarget.querySelector(".rainbow-glow");
-      if (glow) glow.style.opacity = "1";
-      const fills = e.currentTarget.querySelectorAll(".water-fill");
-      fills.forEach((fill) => {
-        fill.style.transform = "scaleX(1)";
-      });
-      e.currentTarget.style.transform = "translateY(-1px) scale(1.01)";
-      e.currentTarget.style.boxShadow = "0 14px 34px rgba(0,0,0,0.55)";
-      e.currentTarget.style.borderColor = "rgba(255,255,255,0.46)";
-      e.currentTarget.style.color = "#05070b";
-    }}
-    onMouseLeave={(e) => {
-      const glow = e.currentTarget.querySelector(".rainbow-glow");
-      if (glow) glow.style.opacity = "0";
-      const fills = e.currentTarget.querySelectorAll(".water-fill");
-      fills.forEach((fill) => {
-        fill.style.transform = "scaleX(0)";
-      });
-      e.currentTarget.style.transform = "translateY(0) scale(1)";
-      e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.38)";
-      e.currentTarget.style.borderColor = "rgba(255,255,255,0.24)";
-      e.currentTarget.style.color = "#f8fafc";
-    }}
-  >
-    <span
-      className="rainbow-glow"
-      aria-hidden="true"
-      style={{
-        position: "absolute",
-        top: "-2px",
-        left: "-2px",
-        width: "calc(100% + 4px)",
-        height: "calc(100% + 4px)",
-        borderRadius: "12px",
-        zIndex: 0,
-        opacity: 0,
-        filter: "blur(5px)",
-        background:
-          "linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000)",
-        backgroundSize: "400%",
-        animation: "uploadGlowShift 20s linear infinite",
-        transition: "opacity 0.3s ease-in-out",
-        pointerEvents: "none",
-      }}
-    />
-    <span
-      className="water-fill"
-      data-side="left"
-      aria-hidden="true"
-      style={{
-        position: "absolute",
-        left: 0,
-        top: 0,
-        bottom: 0,
-        width: "50%",
-        zIndex: 1,
-        transform: "scaleX(0)",
-        transformOrigin: "left center",
-        transition: "transform 320ms ease-in",
-        background:
-          "linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 100%)",
-      }}
-    />
-    <span
-      className="water-fill"
-      data-side="right"
-      aria-hidden="true"
-      style={{
-        position: "absolute",
-        right: 0,
-        top: 0,
-        bottom: 0,
-        width: "50%",
-        zIndex: 1,
-        transform: "scaleX(0)",
-        transformOrigin: "right center",
-        transition: "transform 320ms ease-in",
-        background:
-          "linear-gradient(270deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 100%)",
-      }}
-    />
-    <span style={{ position: "relative", zIndex: 2 }}>Upload an image</span>
-  </button>
-  {previewUrl && (
-    <img
-      src={previewUrl}
-      alt="Preview"
-      style={{
-        width: "200px",
-        maxHeight: "200px",
-        objectFit: "cover",
-        borderRadius: "14px",
-        border: "1px solid rgba(255,255,255,0.18)",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
-        display: "block",
-      }}
-    />
-  )}
-  {previewUrl && (
-    <button
-      type="button"
-      onClick={handleSubmit}
-      style={{
-        position: "relative",
-        width: "100%",
-        padding: "14px 16px",
-        borderRadius: "10px",
-        border: "1px solid rgba(255,255,255,0.24)",
-        background: "rgba(0,0,0,0.38)",
-        color: "#f8fafc",
-        fontSize: "0.95rem",
-        fontWeight: 600,
-        letterSpacing: "0.02em",
-        cursor: "pointer",
-        overflow: "hidden",
-        transition:
-          "transform 260ms ease-in, box-shadow 260ms ease-in, border-color 260ms ease-in, color 260ms ease-in",
-        boxShadow: "0 8px 28px rgba(0,0,0,0.38)",
-      }}
-      onMouseEnter={(e) => {
-        const glow = e.currentTarget.querySelector(".rainbow-glow");
-        if (glow) glow.style.opacity = "1";
-        const fills = e.currentTarget.querySelectorAll(".water-fill");
-        fills.forEach((fill) => {
-          fill.style.transform = "scaleX(1)";
-        });
-        e.currentTarget.style.transform = "translateY(-1px) scale(1.01)";
-        e.currentTarget.style.boxShadow = "0 14px 34px rgba(0,0,0,0.55)";
-        e.currentTarget.style.borderColor = "rgba(255,255,255,0.46)";
-        e.currentTarget.style.color = "#05070b";
-      }}
-      onMouseLeave={(e) => {
-        const glow = e.currentTarget.querySelector(".rainbow-glow");
-        if (glow) glow.style.opacity = "0";
-        const fills = e.currentTarget.querySelectorAll(".water-fill");
-        fills.forEach((fill) => {
-          fill.style.transform = "scaleX(0)";
-        });
-        e.currentTarget.style.transform = "translateY(0) scale(1)";
-        e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.38)";
-        e.currentTarget.style.borderColor = "rgba(255,255,255,0.24)";
-        e.currentTarget.style.color = "#f8fafc";
-      }}
-    >
-      <span
-        className="rainbow-glow"
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: "-2px",
-          left: "-2px",
-          width: "calc(100% + 4px)",
-          height: "calc(100% + 4px)",
-          borderRadius: "12px",
-          zIndex: 0,
-          opacity: 0,
-          filter: "blur(5px)",
-          background:
-            "linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000)",
-          backgroundSize: "400%",
-          animation: "uploadGlowShift 20s linear infinite",
-          transition: "opacity 0.3s ease-in-out",
-          pointerEvents: "none",
-        }}
-      />
-      <span
-        className="water-fill"
-        data-side="left"
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: "50%",
-          zIndex: 1,
-          transform: "scaleX(0)",
-          transformOrigin: "left center",
-          transition: "transform 320ms ease-in",
-          background:
-            "linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 100%)",
-        }}
-      />
-      <span
-        className="water-fill"
-        data-side="right"
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          right: 0,
-          top: 0,
-          bottom: 0,
-          width: "50%",
-          zIndex: 1,
-          transform: "scaleX(0)",
-          transformOrigin: "right center",
-          transition: "transform 320ms ease-in",
-          background:
-            "linear-gradient(270deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 100%)",
-        }}
-      />
-      <span style={{ position: "relative", zIndex: 2 }}>
-        {loading ? "Checking..." : "Submit"}
-      </span>
-    </button>
-  )}
-  {result && (
-    <div
-      style={{
-        textAlign: "center",
-        color: "#f8fafc",
-        background: "rgba(0,0,0,0.34)",
-        border: "1px solid rgba(255,255,255,0.14)",
-        borderRadius: "14px",
-        padding: "12px 16px",
-        width: "100%",
-        boxShadow: "0 8px 28px rgba(0,0,0,0.28)",
-      }}
-    >
-      <div style={{ fontSize: "1.05rem", fontWeight: 700 }}>
-        Result: {result}
-      </div>
+
       <div
         style={{
-          marginTop: "6px",
-          fontSize: "0.95rem",
-          color: "rgba(255,255,255,0.82)",
+          position: "relative",
+          zIndex: 3,
+          width: "min(320px, 82vw)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "14px",
+          margin: "36px auto 80px auto",
+          alignSelf: "center",
         }}
       >
-        Confidence: {confidence}
+        <button
+          type="button"
+          onClick={handleUploadClick}
+          style={{
+            position: "relative",
+            width: "100%",
+            padding: "14px 16px",
+            borderRadius: "10px",
+            border: "1px solid rgba(255,255,255,0.24)",
+            background: "rgba(0,0,0,0.38)",
+            color: "#f8fafc",
+            fontSize: "0.95rem",
+            fontWeight: 600,
+            letterSpacing: "0.02em",
+            cursor: "pointer",
+            overflow: "hidden",
+            transition:
+              "transform 260ms ease-in, box-shadow 260ms ease-in, border-color 260ms ease-in, color 260ms ease-in",
+            boxShadow: "0 8px 28px rgba(0,0,0,0.38)",
+          }}
+          onMouseEnter={(e) => {
+            const glow = e.currentTarget.querySelector(".rainbow-glow");
+            if (glow) glow.style.opacity = "1";
+            const fills = e.currentTarget.querySelectorAll(".water-fill");
+            fills.forEach((fill) => {
+              fill.style.transform = "scaleX(1)";
+            });
+            e.currentTarget.style.transform = "translateY(-1px) scale(1.01)";
+            e.currentTarget.style.boxShadow = "0 14px 34px rgba(0,0,0,0.55)";
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.46)";
+            e.currentTarget.style.color = "#05070b";
+          }}
+          onMouseLeave={(e) => {
+            const glow = e.currentTarget.querySelector(".rainbow-glow");
+            if (glow) glow.style.opacity = "0";
+            const fills = e.currentTarget.querySelectorAll(".water-fill");
+            fills.forEach((fill) => {
+              fill.style.transform = "scaleX(0)";
+            });
+            e.currentTarget.style.transform = "translateY(0) scale(1)";
+            e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.38)";
+            e.currentTarget.style.borderColor = "rgba(255,255,255,0.24)";
+            e.currentTarget.style.color = "#f8fafc";
+          }}
+        >
+          <span
+            className="rainbow-glow"
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              top: "-2px",
+              left: "-2px",
+              width: "calc(100% + 4px)",
+              height: "calc(100% + 4px)",
+              borderRadius: "12px",
+              zIndex: 0,
+              opacity: 0,
+              filter: "blur(5px)",
+              background:
+                "linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000)",
+              backgroundSize: "400%",
+              animation: "uploadGlowShift 20s linear infinite",
+              transition: "opacity 0.3s ease-in-out",
+              pointerEvents: "none",
+            }}
+          />
+          <span
+            className="water-fill"
+            data-side="left"
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: "50%",
+              zIndex: 1,
+              transform: "scaleX(0)",
+              transformOrigin: "left center",
+              transition: "transform 320ms ease-in",
+              background:
+                "linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 100%)",
+            }}
+          />
+          <span
+            className="water-fill"
+            data-side="right"
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              right: 0,
+              top: 0,
+              bottom: 0,
+              width: "50%",
+              zIndex: 1,
+              transform: "scaleX(0)",
+              transformOrigin: "right center",
+              transition: "transform 320ms ease-in",
+              background:
+                "linear-gradient(270deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 100%)",
+            }}
+          />
+          <span style={{ position: "relative", zIndex: 2 }}>
+            Upload an image
+          </span>
+        </button>
+        {previewUrl && (
+          <img
+            src={previewUrl}
+            alt="Preview"
+            style={{
+              width: "200px",
+              maxHeight: "200px",
+              objectFit: "cover",
+              borderRadius: "14px",
+              border: "1px solid rgba(255,255,255,0.18)",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+              display: "block",
+            }}
+          />
+        )}
+        {previewUrl && (
+          <button
+            type="button"
+            onClick={handleSubmit}
+            style={{
+              position: "relative",
+              width: "100%",
+              padding: "14px 16px",
+              borderRadius: "10px",
+              border: "1px solid rgba(255,255,255,0.24)",
+              background: "rgba(0,0,0,0.38)",
+              color: "#f8fafc",
+              fontSize: "0.95rem",
+              fontWeight: 600,
+              letterSpacing: "0.02em",
+              cursor: "pointer",
+              overflow: "hidden",
+              transition:
+                "transform 260ms ease-in, box-shadow 260ms ease-in, border-color 260ms ease-in, color 260ms ease-in",
+              boxShadow: "0 8px 28px rgba(0,0,0,0.38)",
+            }}
+            onMouseEnter={(e) => {
+              const glow = e.currentTarget.querySelector(".rainbow-glow");
+              if (glow) glow.style.opacity = "1";
+              const fills = e.currentTarget.querySelectorAll(".water-fill");
+              fills.forEach((fill) => {
+                fill.style.transform = "scaleX(1)";
+              });
+              e.currentTarget.style.transform = "translateY(-1px) scale(1.01)";
+              e.currentTarget.style.boxShadow = "0 14px 34px rgba(0,0,0,0.55)";
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.46)";
+              e.currentTarget.style.color = "#05070b";
+            }}
+            onMouseLeave={(e) => {
+              const glow = e.currentTarget.querySelector(".rainbow-glow");
+              if (glow) glow.style.opacity = "0";
+              const fills = e.currentTarget.querySelectorAll(".water-fill");
+              fills.forEach((fill) => {
+                fill.style.transform = "scaleX(0)";
+              });
+              e.currentTarget.style.transform = "translateY(0) scale(1)";
+              e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.38)";
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.24)";
+              e.currentTarget.style.color = "#f8fafc";
+            }}
+          >
+            <span
+              className="rainbow-glow"
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: "-2px",
+                left: "-2px",
+                width: "calc(100% + 4px)",
+                height: "calc(100% + 4px)",
+                borderRadius: "12px",
+                zIndex: 0,
+                opacity: 0,
+                filter: "blur(5px)",
+                background:
+                  "linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000)",
+                backgroundSize: "400%",
+                animation: "uploadGlowShift 20s linear infinite",
+                transition: "opacity 0.3s ease-in-out",
+                pointerEvents: "none",
+              }}
+            />
+            <span
+              className="water-fill"
+              data-side="left"
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: "50%",
+                zIndex: 1,
+                transform: "scaleX(0)",
+                transformOrigin: "left center",
+                transition: "transform 320ms ease-in",
+                background:
+                  "linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 100%)",
+              }}
+            />
+            <span
+              className="water-fill"
+              data-side="right"
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+                bottom: 0,
+                width: "50%",
+                zIndex: 1,
+                transform: "scaleX(0)",
+                transformOrigin: "right center",
+                transition: "transform 320ms ease-in",
+                background:
+                  "linear-gradient(270deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 100%)",
+              }}
+            />
+            <span style={{ position: "relative", zIndex: 2 }}>
+              {loading ? "Checking..." : "Submit"}
+            </span>
+          </button>
+        )}
+        {result && (
+          <div
+            style={{
+              textAlign: "center",
+              color: "#f8fafc",
+              background: "rgba(0,0,0,0.34)",
+              border: "1px solid rgba(255,255,255,0.14)",
+              borderRadius: "14px",
+              padding: "12px 16px",
+              width: "100%",
+              boxShadow: "0 8px 28px rgba(0,0,0,0.28)",
+            }}
+          >
+            <div style={{ fontSize: "1.05rem", fontWeight: 700 }}>
+              Result: {result}
+            </div>
+            <div
+              style={{
+                marginTop: "6px",
+                fontSize: "0.95rem",
+                color: "rgba(255,255,255,0.82)",
+              }}
+            >
+              Confidence: {confidence}
+            </div>
+          </div>
+        )}
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
       </div>
-    </div>
-  )}
-  <input
-    type="file"
-    accept="image/*"
-    ref={fileInputRef}
-    onChange={handleFileChange}
-    style={{ display: "none" }}
-  />
-</div>
     </main>
   );
 }

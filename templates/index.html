@@ -56,19 +56,15 @@
 <body>
 
     <h1>AI vs Real Image Detector</h1>
-
-    <!-- Upload Form -->
     <form action="/predict" method="POST" enctype="multipart/form-data">
         <input type="file" name="file" accept="image/*" onchange="previewImage(event)" required>
         <br>
         <button type="submit">Check Image</button>
     </form>
 
-    <!-- Image Preview -->
     <div>        <img id="preview" style="display:none;">
     </div>
 
-    <!-- Result from Flask -->
     {% if result %}
         <div class="result">
             Result: {{ result }}
@@ -79,7 +75,6 @@
         </div>
     {% endif %}
 
-    <!-- JS for preview -->
     <script>
         function previewImage(event) {
             const img = document.getElementById('preview');
