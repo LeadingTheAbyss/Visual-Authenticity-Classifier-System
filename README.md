@@ -114,4 +114,4 @@ npm run dev
 ## 👤 Authors
 
 - Masochistic : [GitHub](https://github.com/leadingtheabyss)
-- Witty_Walter_White : [GitHub](https://github.com/Witty_Walter)
+- Witty_Walter_White : [GitHub](https://github.com/Witty-Walter)
