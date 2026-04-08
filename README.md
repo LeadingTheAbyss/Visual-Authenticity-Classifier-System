@@ -1,117 +1,105 @@
-# 🚀 AI vs Human Image Detection
+# AI vs Human Image Detection
 
-A deep learning-based web application that detects whether an image is **AI-generated or real** using a Convolutional Neural Network (CNN).
-
----
-
-## 🔥 Overview
-
-This project tackles the challenge of distinguishing AI-generated images from real-world images.
-It uses a **pretrained VGG16-based CNN** fine-tuned on a large dataset for binary classification.
+A deep learning-based model to detect whether an image is **AI-generated or Real**, along with an explanation of the reasoning behind the model’s decision.
 
 ---
 
-## 🧠 Model Details
+## Overview
 
-* Architecture: **VGG16 (modified classifier head)**
+With the increasing realism standards of image generative models, like Midjourney, DALL-E, etc. It is getting harder to distinguish between AI-generated and real images.
+
+This project focuses on building a **binary image classifier** and augmenting it with **interpretability**, so that the prediction is not just a label, but also something that can be understood.
+
+---
+
+## Model Details
+
+* Architecture: **ResNet18 (fine-tuned)**
 * Task: Binary Classification (**AI vs REAL**)
 * Framework: **PyTorch**
-* Input Size: 224×224 images
-* Output: Probability score + predicted class
+* Input Size: `224 × 224`
+* Output:
+
+  * Probability score
+  * Predicted class
+  * Short explanation based on attention distribution (The Reasoning Behind Its Decision)
 
 ---
 
-## 📊 Dataset
+## Dataset
 
 * Total Images: **100,000+**
 * Sources:
 
-  * CIFAKE dataset
-  * Custom scraped images (using `pygoogle_image`)
-* Preprocessing:
+  * [CIFAKE dataset](https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images?resource=download)
+  * [Dragon dataset](https://huggingface.co/datasets/lesc-unifi/dragon/viewer/Large)
+  * [Space Images](https://bit.ly/4sdOe5j)
+  * [Div2k High Res dataset](https://bit.ly/4bP0Pae)
+  * [Face Detection Dataset](https://bit.ly/4m6IXuN)
 
-  * Resizing to 224×224
-  * Normalization using ImageNet stats
-  * Manual filtering to remove noisy samples
+### Preprocessing
+
+* Resize to `224 × 224`
+* Normalize using ImageNet mean/std
+* Removed low-quality / grayscale / noisy samples manually.
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 
-* **Frontend:** React (Vite)
-* **Backend:** Flask (REST API)
+* **Backend:** Flask
 * **Model:** PyTorch + torchvision
 
 ---
 
-## 🖥️ Features
+## Features
 
-* Upload image and get instant prediction
-* Clean REST API for inference
-* GPU support (if available)
-* Fast inference pipeline
+* Upload image and get prediction instantly
+* Displays confidence score
+* Provides a simple reason for the prediction
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 AI_Vs_Human_IMG_Detection/
+
 │
-├── backend/
-│   ├── app.py
-│   ├── predict.py
-│   └── model/
-│
-├── frontend/
-│   ├── src/
-│   └── public/
-│
-├── trained_vgg16_binary.pth
+├── app.py
+├── predict.py
+├── trained_resnet18_binary.pth
 └── README.md
 ```
 
 ---
 
-## 🚀 How to Run
+## Deployement Link 
 
-### 🔹 Backend
-
-```bash
-pip install flask flask-cors torch torchvision pillow
-python app.py
-```
-
-### 🔹 Frontend
-
-```bash
-npm install
-npm run dev
-```
+https://huggingface.co/spaces/Witty-Walter-White/IIT_JAMMU
 
 ---
 
-## 🧪 Workflow
+## Workflow
 
-1. Upload an image
+1. User uploads an image
 2. Image is sent to Flask API
 3. Model processes the image
-4. Returns prediction:
-
-   * **AI Generated**
-   * **Real Image**
+4. Grad-CAM heatmap is generated
+5. Prediction + confidence + Reason is returned to the user.
 
 ---
 
-## 📈 Future Improvements
+## Future Improvements
 
-* Improve accuracy with larger datasets
-* Add Grad-CAM visualizations
-* Deploy on cloud (AWS / Vercel + backend hosting)
+* Train on larger and more diverse datasets
+* Improve robustness on highly realistic AI images
+* Replace heuristic explanations with learned explanations
+* Deploy full pipeline on cloud
 
 ---
 
-## 👤 Authors
+## Authors
 
-- Masochistic : [GitHub](https://github.com/leadingtheabyss)
-- Witty_Walter_White : [GitHub](https://github.com/Witty-Walter)
+* Masochistic — https://github.com/leadingtheabyss
+* Witty_Walter_White — https://github.com/Witty-Walter
