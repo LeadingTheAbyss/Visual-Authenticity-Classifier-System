@@ -28,7 +28,7 @@ This project focuses on building a **binary image classifier** and augmenting it
 
 ## Dataset
 
-* Total Images: **100,000+**
+* Total Images: **200,000+**
 * Sources:
 
   * [CIFAKE dataset](https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images?resource=download)
