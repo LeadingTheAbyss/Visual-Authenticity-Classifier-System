@@ -76,7 +76,7 @@ AI_Vs_Human_IMG_Detection/
 
 ## Deployement Link 
 
-https://huggingface.co/spaces/Witty-Walter-White/IIT_JAMMU
+- In Process...
 
 ---
 
