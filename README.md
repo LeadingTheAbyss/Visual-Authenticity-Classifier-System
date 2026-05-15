@@ -12,6 +12,12 @@ This project focuses on building a **binary image classifier** and augmenting it
 
 ---
 
+## Technical Blog
+
+I wrote a complete breakdown of this project here: [My First Machine Learning Project](https://firstproj-blog.hashnode.dev/my-first-machine-learning-project-ai-vs-human-image-detection)
+
+---
+
 ## Model Details
 
 * Architecture: **ResNet18 (fine-tuned)**
